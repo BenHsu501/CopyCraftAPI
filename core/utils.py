@@ -1,4 +1,34 @@
 from openai import OpenAI
+from typing import Union, List, Dict
+import yaml
+
+def get_copywriter_model_info(model:str) -> Union[List[Dict], str]:
+    config = load_yaml_config('cfg/copywriter_model.yaml')
+    print(config.keys())
+    #print('test', not config.keys())
+    if not model in config.keys():
+        return "The YAML file does not have the  " + model + " model."
+
+    description = config[model]['description']
+    steps = config[model]['steps']
+    steps_message = "\n".join([f"{list(step.keys())[0]}: {list(step.values())[0]}" for step in steps])
+    example = config[model]['example']
+    example_message = "\n".join([f"{key}: {value}" for key, value in example.items()])
+
+    message = [
+      {"role": "user", "content": {"type": "text", "text": description}},
+      {"role": "user", "content": {"type": "text", "text": steps_message}},
+      {"role": "user", "content": {"type": "text", "text": example_message}},
+    ]
+    return message
+
+def load_yaml_config(path):
+      # Ensure yaml is imported here if not globally
+    with open(path, 'r') as file:
+        return yaml.safe_load(file)
+    
+
+'''
 
 client = OpenAI()
 
@@ -25,3 +55,4 @@ response = client.chat.completions.create(
 )
 
 print(response.choices[0])
+'''
