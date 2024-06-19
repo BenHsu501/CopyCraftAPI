@@ -1,6 +1,6 @@
 import argparse
 import yaml
-from core.utils import get_copywriter_model_info
+from core.utils import get_copywriter_model_info, get_assistant
 
 def main():
     parser = argparse.ArgumentParser(description="Data Fetching Operations")
@@ -10,7 +10,8 @@ def main():
     args = parser.parse_args()
 
     if args.mode == 'test':
-        print(get_copywriter_model_info('PAsS'))
+        #print(get_copywriter_model_info('PAsS'))
+        print(get_assistant('Angel investor'))
 
 if __name__ == "__main__":
     main()
