@@ -2,17 +2,36 @@ from openai import OpenAI
 from typing import Union, List, Dict
 import yaml
 
-def get_copywriter_model_info(model:str) -> Union[List[Dict], str]:
-    config = load_yaml_config('cfg/copywriter_model.yaml')
-    print(config.keys())
-    #print('test', not config.keys())
-    if not model in config.keys():
-        return "The YAML file does not have the  " + model + " model."
+def load_yaml_config(path: str) -> dict:
+    with open(path, 'r') as file:
+        return yaml.safe_load(file)
 
-    description = config[model]['description']
-    steps = config[model]['steps']
+
+class GetAPIMessage:
+    def __init__(self, path='cfg/', language='English', word_count=720, 
+                 copywriter_model='PASCA', system_article='blog', assistant=''):
+        self.path = path
+        self.para = {
+            'language': language,
+            'word_count': word_count,
+            'copywriter_model': copywriter_model,
+            'system_article': system_article,
+            'assistant': assistant
+        }
+
+
+def get_copywriter_model(model: str) -> Union[List[Dict], str]:
+    config = load_yaml_config('cfg/copywriter_model.yaml')
+
+    if not model in config.keys():
+        return f"The YAML file does not have the {model} model."
+    
+    model_info = config[model]
+    description = model_info['description']
+    steps = model_info['steps']
+    example = model_info['example']
+
     steps_message = "\n".join([f"{list(step.keys())[0]}: {list(step.values())[0]}" for step in steps])
-    example = config[model]['example']
     example_message = "\n".join([f"{key}: {value}" for key, value in example.items()])
 
     message = [
@@ -22,10 +41,16 @@ def get_copywriter_model_info(model:str) -> Union[List[Dict], str]:
     ]
     return message
 
-def load_yaml_config(path):
-      # Ensure yaml is imported here if not globally
-    with open(path, 'r') as file:
-        return yaml.safe_load(file)
+def get_assistant(assistant: str) -> List[Dict]:
+    config = load_yaml_config('cfg/assistant.yaml')
+    #print(config)
+    assistant_info = config[assistant]
+    message = [{"role": "assistant", "content": {"type": "text", "text": assistant_info}},]
+    
+    return message
+
+# def get_system()
+
     
 
 '''
@@ -55,4 +80,18 @@ response = client.chat.completions.create(
 )
 
 print(response.choices[0])
+
+
+response = client.chat.completions.create(
+    model="gpt-4",
+    messages=[
+        {"role": "system", "content": {"type": "text", "text": "System initializing..."}},
+        {"role": "user", "content": {"type": "text", "text": "Hello, how can I improve my garden?"}},
+        {"role": "assistant", "content": {"type": "text", "text": "You can start by assessing the sunlight and soil quality."}},
+        {"role": "user", "content": {"type": "text", "text": "What plants thrive in partial sunlight?"}},
+        {"role": "assistant", "content": {"type": "text", "text": "Ferns and hostas are great for partial sunlight."}}
+    ],
+    max_tokens=150
+)
+
 '''
