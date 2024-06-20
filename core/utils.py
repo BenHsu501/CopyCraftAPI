@@ -1,3 +1,5 @@
+# 
+# https://community.make.com/t/what-is-the-difference-between-system-user-and-assistant-roles-in-chatgpt/36160/4
 from openai import OpenAI
 from typing import Union, List, Dict
 import yaml
@@ -9,7 +11,7 @@ def load_yaml_config(path: str) -> dict:
 
 class GetAPIMessage:
     def __init__(self, path='cfg/', language='English', word_count=720, 
-                 copywriter_model='PASCA', system_article='blog', assistant=''):
+                  copywriter_model='PASCA', system_article='blog', assistant=''):
         self.path = path
         self.para = {
             'language': language,
@@ -18,7 +20,12 @@ class GetAPIMessage:
             'system_article': system_article,
             'assistant': assistant
         }
+    def get_system(role:str) -> str:
+        config = load_yaml_config('cfg/system/role.yaml')
+        system_info = 'I want you to act a ' + config[role]['role'] + '. ' + config[role]['description']
 
+        print(system_info)
+        return system_info
 
 def get_copywriter_model(model: str) -> Union[List[Dict], str]:
     config = load_yaml_config('cfg/copywriter_model.yaml')
@@ -48,10 +55,43 @@ def get_assistant(assistant: str) -> List[Dict]:
     message = [{"role": "assistant", "content": {"type": "text", "text": assistant_info}},]
     
     return message
-
-# def get_system()
-
+def get_user_main_instruction(
+    article_type='blog',
+    para={
+        'copywriter_model': 'PASCA',
+        'language': 'English',
+        'word_count': 500,
+        'paragraph': 4,
+        'sentence': 3,
+        'format': 'markdown',
+        'final': 'final'
+    }
+) -> str:
+    1
+def get_user_main_instruction(article_type = 'blog', para = None ) -> str:
+    # Define default parameters
+    default_para = {
+        'copywriter_model': 'PASCA',
+        'language': 'English',
+        'word_count': 500,
+        'paragraph': 4,
+        'sentence': 3,
+        'format': 'markdown',
+        'final': 'final'
+    }
     
+    # If `para` is provided, update the default dictionary with the provided parameters
+    if para is not None:
+        default_para.update(para)
+
+    print(default_para)
+    config = load_yaml_config('cfg/user/main_instruction.yaml')
+    prompts = config[article_type]
+    message = ''.join(prompts[key] + details[key] for key in prompts.keys() if key in details)
+
+    #print(system_info)
+    #return system_info
+   
 
 '''
 
