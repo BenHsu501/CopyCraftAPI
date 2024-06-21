@@ -10,25 +10,46 @@ def load_yaml_config(path: str) -> dict:
 
 
 class GetAPIMessage:
-    def __init__(self, path='cfg/', language='English', word_count=720, 
-                  copywriter_model='PASCA', system_article='blog', assistant=''):
-        self.path = path
-        self.para = {
-            'language': language,
-            'word_count': word_count,
-            'copywriter_model': copywriter_model,
-            'system_article': system_article,
-            'assistant': assistant
+    def __init__(self, path:str = 'cfg/', article_type:str = 'blog', role = 'Angel investor', para:dict = None):
+        # Define default parameters
+        default_para = {
+            'copywriter_model': 'PASCA',
+            'language': 'English',
+            'word_count': 500,
+            'paragraph': 4,
+            'sentence': 3,
+            'format': 'markdown',
+            'last': ''
         }
-    def get_system(role:str) -> str:
+        if para is not None:
+            default_para.update(para)
+        #
+        self.path = path
+        self.para = para
+        self.article_type = article_type
+        self.role = role
+
+    def get_system(self) -> str:
+        role = self.role
         config = load_yaml_config('cfg/system/role.yaml')
         system_info = 'I want you to act a ' + config[role]['role'] + '. ' + config[role]['description']
 
         print(system_info)
         return system_info
+    
+    def get_user_main_instruction(self) -> str:
+        article_type = self.article_type
+        para = self.para
+  
+        config = load_yaml_config('cfg/user/main_instruction.yaml')
+        prompts = config[article_type]
+        message = ' '.join(prompts[key] + str(para[key]) for key in prompts.keys())
+
+        return message
+   
 
 def get_copywriter_model(model: str) -> Union[List[Dict], str]:
-    config = load_yaml_config('cfg/copywriter_model.yaml')
+    config = load_yaml_config('cfg/user/copywriter_model.yaml')
 
     if not model in config.keys():
         return f"The YAML file does not have the {model} model."
@@ -55,19 +76,7 @@ def get_assistant(assistant: str) -> List[Dict]:
     message = [{"role": "assistant", "content": {"type": "text", "text": assistant_info}},]
     
     return message
-def get_user_main_instruction(
-    article_type='blog',
-    para={
-        'copywriter_model': 'PASCA',
-        'language': 'English',
-        'word_count': 500,
-        'paragraph': 4,
-        'sentence': 3,
-        'format': 'markdown',
-        'final': 'final'
-    }
-) -> str:
-    1
+
 def get_user_main_instruction(article_type = 'blog', para = None ) -> str:
     # Define default parameters
     default_para = {
@@ -77,7 +86,7 @@ def get_user_main_instruction(article_type = 'blog', para = None ) -> str:
         'paragraph': 4,
         'sentence': 3,
         'format': 'markdown',
-        'final': 'final'
+        'last': ''
     }
     
     # If `para` is provided, update the default dictionary with the provided parameters
@@ -87,10 +96,10 @@ def get_user_main_instruction(article_type = 'blog', para = None ) -> str:
     print(default_para)
     config = load_yaml_config('cfg/user/main_instruction.yaml')
     prompts = config[article_type]
-    message = ''.join(prompts[key] + details[key] for key in prompts.keys() if key in details)
+    message = ' '.join(prompts[key] + str(default_para[key]) for key in prompts.keys())
+    print(111, message)
 
-    #print(system_info)
-    #return system_info
+    return message
    
 
 '''
