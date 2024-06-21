@@ -24,12 +24,11 @@ def main():
         }
 
         message = GetAPIMessage(article_type = 'blog', role = 'Angel investor', para = default_para)
-        #print('1. get_system', message.get_system())
-        #print('2. get_user_main_instruction', message.get_user_main_instruction())
-        print('3 . get_copywriter', get_copywriter_model('PSA'))
-
-        # get_user_main_instruction(article_type = 'blog', para = {'language': 'EEEEE'})
-
+        # print('1. get_system', message.get_system())
+        # print('2. get_user_main_instruction', message.get_user_main_instruction())
+        # print('3 . get_copywriter', message.get_copywriter_model())
+        # print('4 . get_my_reference', message.get_my_reference())
+        print('5. combine_messages', message.combine_messages())
 
 if __name__ == "__main__":
     main()
