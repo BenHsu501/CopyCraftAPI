@@ -43,6 +43,7 @@ class GetAPIMessage:
         return message
     
     def get_user_copywriter_model(self) -> str:
+        #breakpoint()
         para = self.para
         model = para['copywriter_model']
         config = load_yaml_config('cfg/user/copywriter_model.yaml')
@@ -60,7 +61,7 @@ class GetAPIMessage:
         message = description + '\n' + 'The formula\'s steps are as follows: \n' + steps_message + '\nExample:\n' + example_message
           
         return message
-    def get_my_reference(self) -> str:
+    def get_user_my_reference(self) -> str:
         path = self.path
         with open(path, 'r') as file:
           message = file.read()
@@ -70,7 +71,7 @@ class GetAPIMessage:
         system_message = self.get_system()
         main_instruction = self.get_user_main_instruction()
         copywriter_message = self.get_user_copywriter_model()
-        reference_message = self.get_my_reference()
+        reference_message = self.get_user_my_reference()
 
         combined_message = [
           {"role": "system", "content": system_message},
