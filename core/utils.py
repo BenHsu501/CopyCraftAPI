@@ -1,7 +1,4 @@
-# 
-# https://community.make.com/t/what-is-the-difference-between-system-user-and-assistant-roles-in-chatgpt/36160/4
-from openai import OpenAI
-from typing import Union, List, Dict
+from typing import List, Dict
 import yaml
 
 def load_yaml_config(path: str) -> dict:
@@ -9,7 +6,7 @@ def load_yaml_config(path: str) -> dict:
         return yaml.safe_load(file)
 
 class GetAPIMessage:
-    def __init__(self, path:str = 'test/test_my_reference.txt', article_type:str = 'blog', role = 'Angel investor', para:dict = None, ):
+    def __init__(self, path:str = 'test/test_my_reference.txt', article_type:str = 'blog', role = 'Angel investor', para:dict = None):
         # Define default parameters
         default_para = {
             'copywriter_model': 'PASCA',
@@ -24,7 +21,7 @@ class GetAPIMessage:
             default_para.update(para)
         #
         self.path = path
-        self.para = para
+        self.para = default_para
         self.article_type = article_type
         self.role = role
 
@@ -41,7 +38,7 @@ class GetAPIMessage:
   
         config = load_yaml_config('cfg/user/main_instruction.yaml')
         prompts = config[article_type]
-        message = ' '.join(prompts[key] + str(para[key]) for key in prompts.keys())
+        message = ' '.join(prompts[key] + ' ' + str(para[key]) for key in prompts.keys())
 
         return message
     
@@ -63,13 +60,13 @@ class GetAPIMessage:
         message = description + '\n' + 'The formula\'s steps are as follows: \n' + steps_message + '\nExample:\n' + example_message
           
         return message
-    def get_my_reference(self):
+    def get_my_reference(self) -> str:
         path = self.path
         with open(path, 'r') as file:
           message = file.read()
-        return message
+        return "Here is my reference material:\n" + message
         
-    def combine_messages(self):
+    def combine_messages(self) -> List[Dict]:
         system_message = self.get_system()
         main_instruction = self.get_user_main_instruction()
         copywriter_message = self.get_user_copywriter_model()
