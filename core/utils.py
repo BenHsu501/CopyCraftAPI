@@ -6,7 +6,29 @@ def load_yaml_config(path: str) -> dict:
         return yaml.safe_load(file)
 
 class GetAPIMessage:
+    """
+    Manages the creation of API messages for different user roles based on YAML configurations.
+    Methods:
+        get_system: Retrieves the system role description from YAML configuration.
+        get_user_main_instruction: Generates the main instruction for the user from YAML configuration.
+        get_user_copywriter_model: Fetches details about the copywriter model from YAML configuration.
+        get_user_my_reference: Reads and returns the reference material from a file.
+        combine_messages: Combines all messages into a structured list for API communication.
+
+    """
     def __init__(self, path:str = 'test/test_my_reference.txt', article_type:str = 'blog', role = 'Angel investor', para:dict = None):
+        """
+        Initializes the GetAPIMessage object with default parameters and updates them with any user-provided parameters.
+
+        Args:
+            path (str): Path to the file containing reference material.
+            article_type (str): The type of article, e.g., 'blog'.
+            role (str): The role of the user, e.g., 'Angel investor'.
+            para (dict, optional): Parameters to override default message settings.
+
+        Example:
+            message_creator = GetAPIMessage(article_type='blog', role='Angel investor', para={'language': 'Spanish'})
+        """
         # Define default parameters
         default_para = {
             'copywriter_model': 'PASCA',
