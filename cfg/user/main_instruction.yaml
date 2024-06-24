@@ -5,4 +5,4 @@ blog:
   paragraph: "words. Please generate an SEO-friendly title based on 'my_reference'. The title should include relevant keywords, attract readers to click, and optimize search engine rankings. Then, extract key information from 'my_reference' to create"
   sentence: "paragraphs, with each paragraph containing at least"
   format: "Finally, summarize the key points and provide encouraging words. Try to maintain the key points of the original text and supplement them accordingly. The final output should be in"
-  last: "format."
+  last: "format. Please remove the author's advertising and private information"
