@@ -6,19 +6,18 @@ from openai import OpenAI
 
 def main():
     parser = argparse.ArgumentParser(description="Data Fetching Operations")
-    # parser.add_argument("--mode", choices=["fetch_youtube_playlist", "download_subtitle", 'test'], help="Select the mode of operation.")
-
-
+    parser.add_argument("--path", type=str, default='test/test_my_reference.txt', help="Generate sources for articles")
+    parser.add_argument("--output_path", type=str, default=None, help="output the generated article")
+    #
     parser.add_argument("--copywriter_model", default="PASCA", help="Select the copywriter model to use for generating content.")
     parser.add_argument("--language", default="English", help="Specify the language for the article.")
     parser.add_argument("--word_count", type=int, default=300, help="Set the total number of words for the article.")
     parser.add_argument("--paragraph", default='4-7', help="Define the number of paragraphs in the article.")
     parser.add_argument("--sentence", type=int, default=3, help="Set the number of sentences per paragraph.")
     parser.add_argument("--format", type=str, default='markdown', help="Choose the format of the article output.")
-
-
-
-
+    #
+    parser.add_argument("--model", type=str, default="gpt-3.5-turbo", help="Set the model for the chatGPT API.")
+    parser.add_argument("--max_tokens", type=int, default=2000, help="set the max tokens for the chatGPT API.")
     args = parser.parse_args()
 
     para = {
@@ -31,24 +30,18 @@ def main():
         'last': ''
     }
 
-    message = GetAPIMessage(article_type = 'blog', role = 'Angel investor', para = para)
+    message = GetAPIMessage(path = args.path, article_type = 'blog', role = 'Angel investor', para = para)
     #print(message.combine_messages())
     # gpt-4o
+
     client = OpenAI()
     response = client.chat.completions.create(model="gpt-3.5-turbo", messages = message.combine_messages(),  max_tokens=2000)
-    '''
-    response = client.chat.completions.create(
-        model="gpt-3.5-turbo",
-        messages=[
-            {"role": "system", "content": "You are a helpful assistant."},
-            {"role": "user", "content": "Who won the world series in 2020?"},
-            {"role": "assistant", "content": "The Los Angeles Dodgers won the World Series in 2020."},
-            {"role": "user", "content": "Where was it played?"}
-        ]
-    )       
-    '''
-    #print(response)
-    print('Text, ', response.choices[0].message.content)
+    response_content = response.choices[0].message.content
+    print(response_content)
+    if args.output_path:
+        with open(args.output_path, "w") as file:
+            file.write(response_content)
+        print("Response saved to:", args.output_path)
 
 if __name__ == "__main__":
     main()
