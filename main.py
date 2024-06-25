@@ -1,5 +1,4 @@
 import argparse
-import yaml
 from core.utils import GetAPIMessage
 from openai import OpenAI
 
