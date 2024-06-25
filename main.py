@@ -3,7 +3,6 @@ import yaml
 from core.utils import GetAPIMessage
 from openai import OpenAI
 
-
 def main():
     parser = argparse.ArgumentParser(description="Data Fetching Operations")
     parser.add_argument("--path", type=str, default='test/test_my_reference.txt', help="Generate sources for articles")
@@ -31,7 +30,6 @@ def main():
     }
 
     message = GetAPIMessage(path = args.path, article_type = 'blog', role = 'Angel investor', para = para)
-    #print(message.combine_messages())
     # gpt-4o
 
     client = OpenAI()
