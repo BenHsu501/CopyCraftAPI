@@ -1,16 +1,14 @@
 # CopyCraftAPI
-
+[中文閱讀](docs/README_ZH.md)
 ## Introduction
 
-The API Message Generator is a Python-based tool designed to manage the creation of API messages for different user roles based on YAML configurations. This tool utilizes the OpenAI API to generate content and is highly customizable through various parameters. 
+CopyCraftAPI is an acronym for Copywriting, Crafting, and API, aiming to simplify the process of automatically generating articles. This project helps generate efficient OpenAI API messages to create articles. You can customize the messages through parameters and YAML files to get the best results.
 
 ## Features
 
-- **Dynamic Role Management:** Retrieve system role descriptions and customize messages based on user roles.
-- **Configurable Message Generation:** Generate main instructions and fetch details about the copywriter model using YAML configurations.
-- **Reference Material Integration:** Read and include reference materials from specified files.
-- **API Communication:** Combine all messages into a structured list for seamless API communication.
-- **Command-Line Interface:** Use argparse for easy command-line argument parsing and script execution.
+- **Generate Efficient API Structure**: The project sets up several efficient article generation templates.
+- **Custom Configuration through YAML**: Easily set up message roles and users through YAML files in the `cfg/` directory.
+- **Command-Line Interface**: Use argparse for simple command-line parameter parsing and script execution.
 
 ## Setup
 
@@ -18,38 +16,33 @@ The API Message Generator is a Python-based tool designed to manage the creation
 
 - Python 3.7 or higher
 - `pip` package manager
-- OpenAI API Key
+- `openai`
 
 ### Installation
 
-1. Clone the repository:
+1. Install via git:
     ```sh
-    git clone git@github.com:BenHsu501/Automated-Blog-Post-Creation-Framework.git
-
-    cd Automated-Blog-Post-Creation-Framework
+    pip install git+https://github.com/BenHsu501/CopyCraftAPI.git
     ```
 
-2. Install the required packages:
-    ```sh
-    pip install -r requirements.txt
-    ```
-
-3. Set up your OpenAI API key as an environment variable:
+2. Set your OpenAI API key as an environment variable:
     ```sh
     export OPENAI_API_KEY='your-api-key'
+    ```
+
+3. Load the package:
+    ```py
+    import CopyCraftAPI.utils as CopyCraftAPI
     ```
 
 ## Usage
 
 ### Command-Line Interface
 
-To generate API messages, use the following command:
-
 ```sh
 python main.py --path test/test_my_reference.txt --article_type blog --role 'Angel investor' --output_path output.txt
 ```
-
-## Arguments
+### Arguments
 - --path: Path to the file containing reference material. Default is test/test_my_reference.txt.
 - --output_path: Path to save the generated article. Default is None.
 - --article_type: Type of the article, e.g., 'blog'. Default is blog.
@@ -62,32 +55,38 @@ python main.py --path test/test_my_reference.txt --article_type blog --role 'Ang
 - --model: Set the model for the chatGPT API. Default is gpt-3.5-turbo.
 - --max_tokens: Set the max tokens for the chatGPT API. Default is 2000.
 
-## Example
-
-To generate API messages, use the following command:
-
+### Python Interface
+Generate API usage message:
 ```py
-python main.py --path test/test_my_reference.txt --article_type blog --role 'Angel investor' --copywriter_model PASCA --language English --word_count 500 --paragraph 5 --sentence 4 --format markdown --model gpt-3.5-turbo --max_tokens 1500 --output_path output.txt
+import CopyCraftAPI.utils as CopyCraftAPI
+message = GetAPIMessage(path='your_reference_txt', article_type='blog', role='Angel investor')
+message = message.combine_messages()
 ```
 
-## Project Detail
+Call OpenAI API:
+```py
+client = OpenAI()
+response = client.chat.completions.create(model="gpt-3.5-turbo", messages=message, max_tokens=2000)
+response_content = response.choices[0].message.content
+### Generate result
+print(response_content)
+```
+
+## Project Details
+
 ### Code Structure
-- main.py: Main script to execute the API message generation.
+- main.py: Main script to execute API message generation.
 - CopyCraftAPI/utils.py: Contains the GetAPIMessage class for managing message creation.
 - cfg/: Directory containing YAML configuration files for roles, main instructions, and copywriter models.
 - test/: Directory containing test files and reference materials.
 
-### How It Works
-* Initialization: The GetAPIMessage class is initialized with user-provided parameters or default values.
-* Role Description: The role description is retrieved from the YAML configuration.
-* Main Instruction: The main instruction for the user is generated based on the article type and parameters.
-* Copywriter Model: Details about the copywriter model are fetched and formatted.
-* Reference Material: The reference material is read from the specified file.
-* Message Combination: All messages are combined into a structured list for API communication.
-* Content Generation: The OpenAI API generates content based on the combined messages.
-* Output: The generated content is printed to the console or saved to the specified output file.
-* For any questions or contributions, please feel free to open an issue or submit a pull request.
+### YAML Configuration Details
+- OpenAI API has three roles: system, user, and assistant.
+    -  System: High-level instructions, serving as the tone and background.
+    - User: User-guided statements.
+    - Assistant: Response settings, not needed for article generation in this project.
+- **cfg/system/role.yaml:** Provides roles, writing articles in the tone of the specified role.
+- **cfg/user/copywriter_model.yaml:** Various copywriting structures, can be added as needed.
+- **cfg/user/main_instruction.yaml:** Details of article generation, can add formats like Twitter or others.
 
-*Disclaimer: This project is for educational and experimental purposes. Use it responsibly and adhere to OpenAI's usage policies.*
-
-
+For any questions or contributions, please feel free to open an issue or submit a pull request.

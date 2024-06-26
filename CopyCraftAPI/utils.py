@@ -104,9 +104,4 @@ class GetAPIMessage:
 
         return combined_message
     
-import openai
-class OpenAIAPT:
-  def __init__(self) -> None:
-      pass
-  
   
