@@ -1,6 +1,6 @@
 import unittest
 from unittest.mock import patch
-from core.utils import GetAPIMessage
+from CopyCraftAPI.utils import GetAPIMessage
 import yaml
 #from pdb import breakponit
 # python3 -m unittest
