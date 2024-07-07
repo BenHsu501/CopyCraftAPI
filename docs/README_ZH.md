@@ -33,7 +33,7 @@ CopyCraftAPI 是 Copywriting、Crafting 與 API 的簡稱，目標是簡化自�
 
 3. 載入套件：
     ```py
-    import CopyCraftAPI.utils as CopyCraftAPI
+    from CopyCraftAPI.utils import GetAPIMessage
     ```
 
 ## 使用
@@ -59,7 +59,7 @@ python main.py --path test/test_my_reference.txt --article_type blog --role 'Ang
 ### Python 介面
 生成 API 使用訊息：
 ```py
-import CopyCraftAPI.utils as CopyCraftAPI
+from CopyCraftAPI.utils import GetAPIMessage
 message = GetAPIMessage(path = 'your_reference_txt', article_type = 'blog', role = 'Angel investor')
 message = message.combine_messages()
 ```

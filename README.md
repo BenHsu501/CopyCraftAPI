@@ -32,7 +32,7 @@ CopyCraftAPI is an acronym for Copywriting, Crafting, and API, aiming to simplif
 
 3. Load the package:
     ```py
-    import CopyCraftAPI.utils as CopyCraftAPI
+    from CopyCraftAPI.utils import GetAPIMessage
     ```
 
 ## Usage
@@ -58,7 +58,7 @@ python main.py --path test/test_my_reference.txt --article_type blog --role 'Ang
 ### Python Interface
 Generate API usage message:
 ```py
-import CopyCraftAPI.utils as CopyCraftAPI
+from CopyCraftAPI.utils import GetAPIMessage
 message = GetAPIMessage(path='your_reference_txt', article_type='blog', role='Angel investor')
 message = message.combine_messages()
 ```
