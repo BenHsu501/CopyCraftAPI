@@ -7,7 +7,7 @@ print("Included Packages:", find_packages())
 
 setup(
     name='CopyCraftAPI',
-    version='0.6.0',
+    version='0.7.0',
     packages=find_packages() + ['CopyCraftAPI.cfg'],
     include_package_data=True,
     package_data={
