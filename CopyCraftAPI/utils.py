@@ -2,18 +2,19 @@ from typing import List, Dict
 import yaml
 import pkg_resources
 
-
+'''
 def load_yaml_config(path: str) -> dict:
     with open(path, 'r') as file:
         return yaml.safe_load(file)
-    
+'''
+
 def load_yaml_config(resource_path):
     """
     Load a YAML configuration file from the package resources.
     """
     try:
         resource_package = __name__
-        resource_path = '/'.join(('cfg', resource_path))
+        resource_path = 'cfg/' + resource_path
         file_path = pkg_resources.resource_filename(resource_package, resource_path)
         with open(file_path, 'r') as file:
             return yaml.safe_load(file)
@@ -64,7 +65,7 @@ class GetAPIMessage:
 
     def get_system(self) -> str:
         role = self.role
-        config = load_yaml_config('CopyCraftAPI/cfg/system/role.yaml')
+        config = load_yaml_config('system/role.yaml')
         system_info = 'I want you to act a ' + config[role]['role'] + '. ' + config[role]['description']
 
         return system_info
@@ -73,7 +74,7 @@ class GetAPIMessage:
         article_type = self.article_type
         para = self.para
   
-        config = load_yaml_config('CopyCraftAPI/cfg/user/main_instruction.yaml')
+        config = load_yaml_config('user/main_instruction.yaml')
         prompts = config[article_type]
         message = ' '.join(prompts[key] + ' ' + str(para[key]) for key in prompts.keys())
 
@@ -83,7 +84,7 @@ class GetAPIMessage:
         #breakpoint()
         para = self.para
         model = para['copywriter_model']
-        config = load_yaml_config('CopyCraftAPI/cfg/user/copywriter_model.yaml')
+        config = load_yaml_config('user/copywriter_model.yaml')
 
         if not model in config.keys():
             return f"The YAML file does not have the {model} model."
