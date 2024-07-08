@@ -89,4 +89,7 @@ print(response_content)
 - **cfg/user/copywriter_model.yaml:** Various copywriting structures, can be added as needed.
 - **cfg/user/main_instruction.yaml:** Details of article generation, can add formats like Twitter or others.
 
+### Next plan
+Add tiktoken to limit the number of max tokens.
+
 For any questions or contributions, please feel free to open an issue or submit a pull request.
