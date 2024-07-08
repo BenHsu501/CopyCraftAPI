@@ -49,7 +49,7 @@ class GetAPIMessage:
 
     def get_system(self) -> str:
         role = self.role
-        config = load_yaml_config('cfg/system/role.yaml')
+        config = load_yaml_config('CopyCraftAPI/cfg/system/role.yaml')
         system_info = 'I want you to act a ' + config[role]['role'] + '. ' + config[role]['description']
 
         return system_info
@@ -58,7 +58,7 @@ class GetAPIMessage:
         article_type = self.article_type
         para = self.para
   
-        config = load_yaml_config('cfg/user/main_instruction.yaml')
+        config = load_yaml_config('CopyCraftAPI/cfg/user/main_instruction.yaml')
         prompts = config[article_type]
         message = ' '.join(prompts[key] + ' ' + str(para[key]) for key in prompts.keys())
 
@@ -68,7 +68,7 @@ class GetAPIMessage:
         #breakpoint()
         para = self.para
         model = para['copywriter_model']
-        config = load_yaml_config('cfg/user/copywriter_model.yaml')
+        config = load_yaml_config('CopyCraftAPI/cfg/user/copywriter_model.yaml')
 
         if not model in config.keys():
             return f"The YAML file does not have the {model} model."

@@ -78,7 +78,7 @@ print(response_content)
 ### 代碼結構
 - main.py: 執行 API message 生成的主腳本。
 - CopyCraftAPI/utils.py: 包含管理 message 建立的 GetAPIMessage class。
-- cfg/: 包含角色、主要指令和文案模型的 YAML 配置文件的目錄。
+- CopyCraftAPI/cfg/: 包含角色、主要指令和文案模型的 YAML 配置文件的目錄。
 - test/: 包含測試文件和參考資料的目錄。
 
 ### yaml 設置細節

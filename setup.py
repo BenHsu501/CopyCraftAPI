@@ -1,12 +1,17 @@
 from setuptools import setup, find_packages
-###
+import os
+
+print("Current Directory:", os.getcwd())
+print("Included Packages:", find_packages())
+#print("Files in cfg Directory:", os.listdir('cfg'))
+
 setup(
     name='CopyCraftAPI',
     version='0.4.0',
-    packages=find_packages(),
+    packages=find_packages() + ['CopyCraftAPI.cfg'],
     include_package_data=True,
     package_data={
-        '': ['cfg/**/*']
+        'CopyCraftAPI': ['CopyCraftAPI/cfg/**/*']
     },
     install_requires=[
         'openai'

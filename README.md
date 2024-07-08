@@ -7,7 +7,7 @@ CopyCraftAPI is an acronym for Copywriting, Crafting, and API, aiming to simplif
 ## Features
 
 - **Generate Efficient API Structure**: The project sets up several efficient article generation templates.
-- **Custom Configuration through YAML**: Easily set up message roles and users through YAML files in the `cfg/` directory.
+- **Custom Configuration through YAML**: Easily set up message roles and users through YAML files in the `CopyCraftAPI/cfg/` directory.
 - **Command-Line Interface**: Use argparse for simple command-line parameter parsing and script execution.
 
 ## Setup
@@ -77,7 +77,7 @@ print(response_content)
 ### Code Structure
 - main.py: Main script to execute API message generation.
 - CopyCraftAPI/utils.py: Contains the GetAPIMessage class for managing message creation.
-- cfg/: Directory containing YAML configuration files for roles, main instructions, and copywriter models.
+- CopyCraftAPI/cfg/: Directory containing YAML configuration files for roles, main instructions, and copywriter models.
 - test/: Directory containing test files and reference materials.
 
 ### YAML Configuration Details
