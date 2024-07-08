@@ -1,9 +1,24 @@
 from typing import List, Dict
 import yaml
+import pkg_resources
+
 
 def load_yaml_config(path: str) -> dict:
     with open(path, 'r') as file:
         return yaml.safe_load(file)
+    
+def load_yaml_config(resource_path):
+    """
+    Load a YAML configuration file from the package resources.
+    """
+    try:
+        resource_package = __name__
+        resource_path = '/'.join(('cfg', resource_path))
+        file_path = pkg_resources.resource_filename(resource_package, resource_path)
+        with open(file_path, 'r') as file:
+            return yaml.safe_load(file)
+    except Exception as e:
+        raise FileNotFoundError(f"Unable to find or open the file: {resource_path}") from e
 
 class GetAPIMessage:
     """

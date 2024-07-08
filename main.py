@@ -3,11 +3,11 @@ from CopyCraftAPI.utils import GetAPIMessage
 from openai import OpenAI
 
 def main():
+    #breakpoint()
     parser = argparse.ArgumentParser(description="Data Fetching Operations")
     parser.add_argument("--path", type=str, default='test/test_my_reference.txt', help="Generate sources for articles")
     parser.add_argument("--output_path", type=str, default=None, help="output the generated article")
     parser.add_argument("--article_type", type=str, default='blog', help="output the generated article")
-    parser.add_argument("--output_path", type=str, default=None, help="output the generated article")
     
     #
     parser.add_argument("--copywriter_model", default="PASCA", help="Select the copywriter model to use for generating content.")
@@ -30,6 +30,7 @@ def main():
         'format': args.format,
         'last': ''
     }
+    
 
     message = GetAPIMessage(path = args.path, article_type = 'blog', role = 'Angel investor', para = para)
     # gpt-4o
